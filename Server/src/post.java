@@ -5,9 +5,20 @@ import java.net.Socket;
 
 public class post {
 	public static void main(String args[]) throws Exception {
+		String group;
 		
-		
-		System.out.println(args.length);
+		if(args.length == 1){
+			Socket sock = new Socket("localhost", 12345);
+			group = args[1];
+		} else if(args.length == 3 ){
+			Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
+			group = args[3];
+		} else if (args.length == 5){
+			Socket sock = new Socket(args[1], Integer.parseInt(args[3]));
+			group = args[4];
+		} else {
+			System.out.println("Invalid post arguments.");
+		}
 		
 		
 		String line;	// user input
