@@ -7,8 +7,11 @@ public class get {
 	public static void main(String args[]) throws Exception {
 		String line;	// user input
 		
+		final String user = System.getProperty("user.name");
+		System.out.println(user);
+		
 		if(args.length == 1){
-			Socket sock = new Socket("localhost", 12345);
+			//Socket sock = new Socket("localhost", 12345);
 			line = args[1];
 		} else if(args.length == 3 ){
 			Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
