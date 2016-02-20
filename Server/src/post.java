@@ -7,7 +7,6 @@ public class post {
 	public static void main(String args[]) throws Exception {
 		
 		
-		//sex
 		
 		String line;	// user input
 		BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
