@@ -62,8 +62,6 @@ public class post {
 		if(result.equals("ok")){ // Server accepted username.
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in)); //read from input
 			//System.out.println("Username verified. Please enter your message: ");
-
-
             String enterIn = "";
 
             while((enterIn = userdata.readLine()) != null){
