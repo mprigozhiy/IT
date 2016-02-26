@@ -54,6 +54,7 @@ public class get {
 		
 		while (result != null) {
 			System.out.println(result);	
+			System.out.println("");
 			result = fromServer.readLine();
 		}
 		

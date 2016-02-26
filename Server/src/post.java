@@ -7,18 +7,18 @@ import java.net.UnknownHostException;
 public class post {
 	public static void main(String args[]) throws Exception {
 		String group = null;
-		
+		Socket sock = null;
 	try{
 		if(args.length == 1){
-			Socket sock = new Socket("localhost", 12345);
+			sock = new Socket("localhost", 12345);
 			System.out.println("localhost, 12345");
 			group = args[0];
 		} else if(args.length == 3 ){
-			Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
+			sock = new Socket("localhost", Integer.parseInt(args[1]));
 			System.out.println("localhost, " + Integer.parseInt(args[1]));
 			group = args[3];
 		} else if (args.length == 5){
-			Socket sock = new Socket(args[1], Integer.parseInt(args[3]));
+			sock = new Socket(args[1], Integer.parseInt(args[3]));
 			System.out.println(args[1] + ", " + Integer.parseInt(args[3]));
 			group = args[4];
 		} else {
@@ -38,7 +38,7 @@ public class post {
 		String line;	// user input
 		
 	
-		Socket sock = new Socket("localhost", 12345);	// connect to localhost port 12345
+		//Socket sock = new Socket("localhost", 12345);	// connect to localhost port 12345
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 	
@@ -60,9 +60,10 @@ public class post {
 		
 		result = fromServer.readLine();
 		if(result.equals("ok")){
-			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
-			String enterIn = userdata.readLine();
-			toServer.writeBytes(enterIn + "\n");
+			//BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
+			//String enterIn = userdata.readLine();
+			toServer.writeBytes("Big dick city\n");
+			System.out.println("penis");
 		} else{
 			if(result.equals("error: invalid command")){
 				System.out.println(result);

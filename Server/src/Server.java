@@ -22,7 +22,7 @@ public class Server {
 		else {
 			svc = new ServerSocket(12345, 5);	// listen on port 12345
 		}
-
+		for(int i = 0; i < 2; i++){
 		Socket conn = svc.accept();	// get a connection
 
 		// get the input/output streams for the socket
@@ -31,7 +31,7 @@ public class Server {
 
 		// read the data
 		String msg;
-		msg = fromClient.readLine();
+		msg = fromClient.readLine().toString();
 		
 		String response;
 		
@@ -40,7 +40,7 @@ public class Server {
 		StringTokenizer st = new StringTokenizer(msg);
 		String token = st.nextToken();
 		String initialToken = token;
-		if (!initialToken.equals("get") || !initialToken.equals("post")) {
+		if (!initialToken.equals("get") && !initialToken.equals("post")) {
 			response = "error: invalid command";
 			toClient.writeBytes(response);
 		}
@@ -49,24 +49,37 @@ public class Server {
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
 				if (!st.hasMoreTokens()) {
-					if (initialToken.equals("post") && !serv.containsKey(initialToken)) {
+					if (initialToken.equals("post") && !serv.containsKey(token)) {
 						ArrayList<message> messageList = new ArrayList<message>();
 						serv.put(token, messageList);
-						response = "ok";
+						response = "ok\n";
+						System.out.println("dickkk");
 						toClient.writeBytes(response);
 						String usrnm = fromClient.readLine();
 						System.out.println("Username "+"'"+usrnm+"'"+" received.");
-						response = "ok";
+						response = "ok\n";
+						toClient.writeBytes(response);
 						String msge;
-						String finalMessage = "";
-						while ((msge = fromClient.readLine()) != null) {
+						//String finalMessage = "";
+						
+						/*while ((msge = fromClient.readLine()) != null) {
 							finalMessage += msge;
-						}
-						System.out.println("Message "+"'"+finalMessage+"'"+" received.");
+						}*/
+						msge = fromClient.readLine();
+						
+						System.out.println("Message "+"'"+msge+"'"+" received.");
 						String loc = conn.getRemoteSocketAddress().toString();
-						message m = new message(usrnm, finalMessage, loc);
-						serv.get(initialToken).add(m);
+						message m = new message(usrnm, msge, loc);
+						serv.get(token).add(m);
 						conn.close();		// close connection
+					}
+					else if (initialToken.equalsIgnoreCase("get")) {
+						//CODE THE GROUP EXISTS CHECK
+						toClient.writeBytes("ok\n");
+						toClient.writeBytes(serv.get(token).size() + " message(s) ");
+						for(message mess:serv.get(token)) {
+							toClient.writeBytes(mess.toString());
+						}
 					}
 					if (!serv.containsKey(token)) {
 						response = "error: in";
@@ -79,11 +92,11 @@ public class Server {
 		
 		// do the work
 		//response = message.length() + ": " + message.toUpperCase() + '\n';
-
+		conn.close();
 		//toClient.writeBytes(response);	// send the result
-
+		}
 		System.out.println("server exiting\n");
-		conn.close();		// close connection
+				// close connection
 		svc.close();		// stop listening
 
 	}
