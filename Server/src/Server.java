@@ -188,7 +188,6 @@ public class Server implements Runnable {
 		if (serv.containsKey(groupName)){
 			List<message> temp = serv.get(groupName);
 			temp.add(new message(username, clientMsg, sock.getRemoteSocketAddress().toString()));
-			//DID HASH TABLE UPDATE - JONATHAN CAVERLY
 		}
 		else {
 			List<message> temp = Collections.synchronizedList(new ArrayList<message>());
