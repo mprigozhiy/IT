@@ -160,7 +160,7 @@ public class Server implements Runnable {
 		
 	}
 
-	private synchronized static void runGet(Socket conn, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException {
+	private static void runGet(Socket conn, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException {
 		if (serv.containsKey(groupName)) {
 			toClient.writeBytes("ok\n");
 			toClient.writeBytes(serv.get(groupName).size() + " message(s)\n");
