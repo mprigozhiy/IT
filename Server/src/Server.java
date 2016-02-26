@@ -32,8 +32,12 @@ public class Server {
 			toClient.writeBytes(response);
 		}
 		else {
+			
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
+				if (!st.hasMoreTokens()) {
+					if (token.equals(""));
+				}
 			}
 			
 		}
