@@ -2,26 +2,35 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class post {
 	public static void main(String args[]) throws Exception {
 		String group = null;
 		
+	try{
 		if(args.length == 1){
-			//Socket sock = new Socket("localhost", 12345);
+			Socket sock = new Socket("localhost", 12345);
 			System.out.println("localhost, 12345");
 			group = args[0];
 		} else if(args.length == 3 ){
-			//Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
+			Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
 			System.out.println("localhost, " + Integer.parseInt(args[1]));
 			group = args[3];
 		} else if (args.length == 5){
-			//Socket sock = new Socket(args[1], Integer.parseInt(args[3]));
+			Socket sock = new Socket(args[1], Integer.parseInt(args[3]));
 			System.out.println(args[1] + ", " + Integer.parseInt(args[3]));
 			group = args[4];
 		} else {
 			System.out.println("Invalid post arguments.");
 		}
+	} catch (IllegalArgumentException e) {
+		System.out.println("Invalid Port Number");
+		return;
+	} catch (UnknownHostException e) {
+		System.out.println("Invalid Host Name");
+		return;
+	}
 		
 		
 		
