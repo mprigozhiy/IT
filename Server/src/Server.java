@@ -126,7 +126,7 @@ public class Server implements Runnable {
 			temp.add(new message(username, clientMsg, sock.getRemoteSocketAddress().toString()));
 		}
 		else {
-			List<message> temp = Collections.synchronizedList(new ArrayList<message>());
+			List<message> temp = new ArrayList<message>();
 			temp.add(new message(username, clientMsg, sock.getRemoteSocketAddress().toString()));
 			serv.put(groupName, temp);
 		}
