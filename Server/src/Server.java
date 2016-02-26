@@ -16,7 +16,7 @@ public class Server {
 		Map<String,ArrayList<message>> serv = new HashMap<String,ArrayList<message>>();
 		ServerSocket svc;
 		
-		if (!args[0].equals("")) {
+		if (args.length != 0) {
 			svc = new ServerSocket(Integer.parseInt(args[0].substring(3, args[0].length())), 5);	// listen on port 12345
 		}
 		else {
@@ -55,12 +55,14 @@ public class Server {
 						response = "ok";
 						toClient.writeBytes(response);
 						String usrnm = fromClient.readLine();
+						System.out.println("Username "+"'"+usrnm+"'"+" received.");
 						response = "ok";
 						String msge;
 						String finalMessage = "";
 						while ((msge = fromClient.readLine()) != null) {
 							finalMessage += msge;
 						}
+						System.out.println("Message "+"'"+finalMessage+"'"+" received.");
 						String loc = conn.getRemoteSocketAddress().toString();
 						message m = new message(usrnm, finalMessage, loc);
 						serv.get(initialToken).add(m);
