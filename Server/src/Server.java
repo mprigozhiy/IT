@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.StringTokenizer;
 
 public class Server {
 
@@ -17,13 +18,30 @@ public class Server {
 		DataOutputStream toClient = new DataOutputStream(conn.getOutputStream());
 
 		// read the data
-		String line = fromClient.readLine();
-		System.out.println("got line \"" + line + "\"");
+		String message;
+		message = fromClient.readLine();
+		
+		String response;
+		
+		System.out.println("got line \"" + message + "\"");
 
+		StringTokenizer st = new StringTokenizer(message);
+		String token = st.nextToken();
+		if (!token.equals("get") || !token.equals("post")) {
+			response = "error: invalid command";
+			toClient.writeBytes(response);
+		}
+		else {
+			while (st.hasMoreTokens()) {
+				token = st.nextToken();
+			}
+			
+		}
+		
 		// do the work
-		String result = line.length() + ": " + line.toUpperCase() + '\n';
+		response = message.length() + ": " + message.toUpperCase() + '\n';
 
-		toClient.writeBytes(result);	// send the result
+		toClient.writeBytes(response);	// send the result
 
 		System.out.println("server exiting\n");
 		conn.close();		// close connection

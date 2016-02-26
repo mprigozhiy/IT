@@ -37,7 +37,7 @@ public class post {
 		toServer.writeBytes(line + '\n');	// send the line to the server
 		String result = fromServer.readLine();	// read a one-line result
 		
-		if(result.equals("ok\n")){
+		/*if(result.equals("ok")){
 			line = System.getProperty("user.name");
 			System.out.println(System.getProperty("user.name"));
 			toServer.writeBytes(line + '\n');
@@ -47,7 +47,7 @@ public class post {
 		if(result.equals("ok\n")){
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
 			toServer.writeBytes(userdata + "\n");
-		}
+		}*/
 		
 		System.out.println(result);		// print it
 		sock.close();				// and we're done
