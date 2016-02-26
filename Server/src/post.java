@@ -15,7 +15,7 @@ public class post {
 			group = args[0];
 		} else if(args.length == 3 ){
 			sock = new Socket("localhost", Integer.parseInt(args[1]));
-			group = args[3];
+			group = args[2];
 		} else if (args.length == 5){
 			sock = new Socket(args[1], Integer.parseInt(args[3]));
 			group = args[4];

@@ -20,7 +20,7 @@ public class get {
 				line = args[0];
 			} else if(args.length == 3 ){
 				sock = new Socket("localhost", Integer.parseInt(args[1]));
-				line = args[3];
+				line = args[2];
 			} else if (args.length == 5){
 				sock = new Socket(args[1], Integer.parseInt(args[3]));
 				line = args[4];
