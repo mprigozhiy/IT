@@ -32,15 +32,13 @@ public class get {
 			System.out.println("Invalid Host Name");
 			return;
 		}
-		
-		
-		
+				
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 	
 		
 		
-		toServer.writeBytes(line + '\n');	// send the line to the server
+		toServer.writeBytes("get " + line + '\n');	// send the line to the server
 		
 		String result = "";	// read a one-line result
 		
