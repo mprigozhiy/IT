@@ -160,7 +160,7 @@ public class Server implements Runnable {
 		
 	}
 
-	private synchronized static void runGet(Socket conn, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException {
+	private static void runGet(Socket conn, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException {
 		if (serv.containsKey(groupName)) {
 			toClient.writeBytes("ok\n");
 			toClient.writeBytes(serv.get(groupName).size() + " message(s)\n");
@@ -176,7 +176,7 @@ public class Server implements Runnable {
 		}
 	}
 
-	private	synchronized static void runPost(Socket sock, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException{
+	private static void runPost(Socket sock, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException{
 		//CHECK FOR PROPER INPUTS - MIKHAIL 
 		toClient.writeBytes("ok\n");
 		String username = fromClient.readLine();
