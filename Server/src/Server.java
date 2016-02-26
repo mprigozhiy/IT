@@ -176,8 +176,13 @@ public class Server implements Runnable {
 		String username = fromClient.readLine();
 		System.out.println("username is: " + username);
 		toClient.writeBytes("ok\n");
-		String clientMsg = fromClient.readLine() + "\n";
-		System.out.print("The message was received: " + clientMsg);
+		String clientMsg = "";                
+        String add = "";
+
+        while((add = fromClient.readLine()) != null){
+        	clientMsg = clientMsg + add + "\n";
+        }		
+        System.out.println("The message was received: " + clientMsg);
 
 		if (serv.containsKey(groupName)){
 			List<message> temp = serv.get(groupName);
