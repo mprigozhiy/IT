@@ -57,8 +57,6 @@ public class Server implements Runnable {
 					
 					// read the data
 					String recMsg = null;
-					String response;
-					String token;
 
 					try {
 						recMsg = fromClient.readLine().toString();
@@ -69,9 +67,26 @@ public class Server implements Runnable {
 
 					System.out.println("got line \"" + recMsg + "\"");
 
-					StringTokenizer st = new StringTokenizer(recMsg);
+					int firstSpace = recMsg.indexOf(" ");
+					
+					String status = recMsg.substring(0, firstSpace).trim();
+					String groupName = recMsg.substring(firstSpace).trim();
+					
+					/*StringTokenizer st = new StringTokenizer(recMsg);
 					String status = st.nextToken();
-					String groupName = st.nextToken();
+					String groupName = "";
+					int numTokens = st.countTokens();
+					while (numTokens > 0) {
+						groupName += st.nextToken();
+						numTokens--;
+					}*/
+					System.out.println(groupName);
+					
+					for (int i = 0; i < groupName.length(); i++) {
+						if (Character.isISOControl(groupName.charAt(i))) {
+							//toClient.writeBytes("The groupname ");
+						}
+					}
 
 					ArrayList<String> clientRequest = new ArrayList<String>(); //UserRequests are <= 6, so you can just base it off size
 					clientRequest.add(status); //add all tokens here to store the entire request
