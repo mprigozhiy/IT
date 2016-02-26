@@ -1,46 +1,62 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class get {
 	public static void main(String args[]) throws Exception {
-		String line;	// user input
-		
-		//BufferedReader br = new BufferedReader( new InputStreamReader(System.in));
-		//line = br.readLine();
-		
-		//System.out.println(line);
+		String line = null;	
 		Socket sock = null;
-		if(args.length == 1){
-			sock = new Socket("localhost", 12345);
-			line = args[0];
-			System.out.println(line);
-		} else if(args.length == 3 ){
-			sock = new Socket("localhost", Integer.parseInt(args[1]));
-			line = args[3];
-		} else if (args.length == 5){
-			sock = new Socket(args[1], Integer.parseInt(args[3]));
-			line = args[4];
-		} else {
-			System.out.println("Invalid post arguments.");
+		
+		try {
+			if(args.length == 1){
+				sock = new Socket("localhost", 12345);
+				line = args[0];
+				System.out.println(line);
+			} else if(args.length == 3 ){
+				sock = new Socket("localhost", Integer.parseInt(args[1]));
+				line = args[3];
+			} else if (args.length == 5){
+				sock = new Socket(args[1], Integer.parseInt(args[3]));
+				line = args[4];
+			} else {
+				System.out.println("Invalid post arguments.");
+				return;
+			}
+		} catch (IllegalArgumentException e) {
+			System.out.println("Invalid Port Number");
+			return;
+		} catch (UnknownHostException e) {
+			System.out.println("Invalid Host Name");
+			return;
 		}
 		
-		//BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
-	
-		//Socket sock = new Socket("localhost", 12345);	// connect to localhost port 12345
+		
+		
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 	
-		line = "hello";		// read a line from the user
+		
 		
 		toServer.writeBytes(line + '\n');	// send the line to the server
 		
 		String result = "";	// read a one-line result
 		
+		result = fromServer.readLine();
+		
+		if (result.equalsIgnoreCase("error: invalid group name") || result.equalsIgnoreCase("error: invalid command")) {
+			System.out.println(result);
+			sock.close();
+			return;
+		}
+		
+		result = fromServer.readLine();
+		
 		while (result != null) {
-			result = fromServer.readLine();
 			System.out.println(result);	
+			result = fromServer.readLine();
 		}
 		
 		//System.out.println(result);		// print it
