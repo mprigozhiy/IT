@@ -37,18 +37,37 @@ public class post {
 		toServer.writeBytes(line + '\n');	// send the line to the server
 		String result = fromServer.readLine();	// read a one-line result
 		
+<<<<<<< HEAD
 		/*if(result.equals("ok")){
+=======
+		if(result.equals("ok")){
+>>>>>>> c98eae8301a65e0f338cd3b3b09e1c3b571f00a0
 			line = System.getProperty("user.name");
 			System.out.println(System.getProperty("user.name"));
 			toServer.writeBytes(line + '\n');
+		} else if(result.equals("")){
+			System.out.println("Invalid username.");
+			System.exit(1);
 		}
 		
 		result = fromServer.readLine();
-		if(result.equals("ok\n")){
+		if(result.equals("ok")){
+			System.out.println("Hello");
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
+<<<<<<< HEAD
 			toServer.writeBytes(userdata + "\n");
 		}*/
+=======
+			String enterIn = userdata.readLine();
+			toServer.writeBytes(enterIn + "\n");
+		}  else if(result.equals("")){
+			System.out.println("Invalid username.");
+			System.exit(1);
+		}
+>>>>>>> c98eae8301a65e0f338cd3b3b09e1c3b571f00a0
 		
+		
+		//result = fromServer.readLine();
 		System.out.println(result);		// print it
 		sock.close();				// and we're done
 	
