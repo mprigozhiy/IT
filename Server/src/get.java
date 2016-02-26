@@ -14,7 +14,6 @@ public class get {
 			if(args.length == 1){
 				sock = new Socket("localhost", 12345);
 				line = args[0];
-				System.out.println(line);
 			} else if(args.length == 3 ){
 				sock = new Socket("localhost", Integer.parseInt(args[1]));
 				line = args[3];

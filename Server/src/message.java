@@ -14,7 +14,8 @@ public class message {
 	public message(String user, String mess, String location) {
 		this.mess = mess;
 		this.user = user;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("EST"));
 		Calendar cal = Calendar.getInstance();
 		this.stamp = dateFormat.format(cal.getTime());
 		this.location = location;
