@@ -23,13 +23,14 @@ public class post {
 			group = args[4];
 		} else {
 			System.out.println("Invalid post arguments.");
+			System.exit(1);
 		}
 	} catch (IllegalArgumentException e) {
-		System.out.println("Invalid Port Number");
-		return;
+		System.out.println("Invalid Port Number.");
+		System.exit(1);
 	} catch (UnknownHostException e) {
-		System.out.println("Invalid Host Name");
-		return;
+		System.out.println("Invalid Host Name.");
+		System.exit(1);
 	}
 		
 		
@@ -53,8 +54,10 @@ public class post {
 		} else{
 			if(result.equals("error: invalid command")){
 				System.out.println(result);
+				System.exit(1);
 			} else if(result.equals("error: invalid group name")){
 				System.out.println(result);
+				System.exit(1);
 			}
 		}
 		
@@ -68,8 +71,10 @@ public class post {
 		} else{
 			if(result.equals("error: invalid command")){
 				System.out.println(result);
+				System.exit(1);
 			} else if(result.equals("error: invalid user name")){
 				System.out.println(result);
+				System.exit(1);
 			}
 		}
 		
