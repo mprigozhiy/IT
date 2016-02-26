@@ -13,7 +13,7 @@ public class post {
 		if(args.length == 1){
 			sock = new Socket("localhost", 12345);
 			group = args[0];
-		} else if(args.length == 3 ){
+		} else if(args.length == 2 ){
 			sock = new Socket("localhost", Integer.parseInt(args[1]));
 			group = args[3];
 		} else if (args.length == 5){
@@ -62,8 +62,13 @@ public class post {
 		if(result.equals("ok")){ // Server accepted username.
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in)); //read from input
 			//System.out.println("Username verified. Please enter your message: ");
-			String enterIn = userdata.readLine();
-			toServer.writeBytes(enterIn + "\n"); //send input stream
+
+
+            String enterIn = "";
+
+            while((enterIn = userdata.readLine()) != null){
+            	toServer.writeBytes(enterIn + "\n"); //send input stream
+            }
 			
 		} else{ //error conditions (exit)
 			if(result.equals("error: invalid command")){

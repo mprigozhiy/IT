@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -35,10 +36,12 @@ public class Server implements Runnable {
 		while(true){
 			Socket conn = svc.accept();	// get a connection
 			Thread t = new Thread(new Runnable(){
-
+				
 				Socket socket = conn;
 				@Override
 				public void run() {
+					
+
 
 					// get the input/output streams for the socket
 					BufferedReader fromClient = null; 
@@ -51,9 +54,11 @@ public class Server implements Runnable {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-
+					
 					// read the data
 					String recMsg = null;
+					String response;
+					String token;
 
 					try {
 						recMsg = fromClient.readLine().toString();
@@ -64,46 +69,95 @@ public class Server implements Runnable {
 
 					System.out.println("got line \"" + recMsg + "\"");
 
-					int firstSpace = recMsg.indexOf(" ");
-					
-					String status = recMsg.substring(0, firstSpace).trim();
-					String groupName = recMsg.substring(firstSpace).trim();
-					
-					/*StringTokenizer st = new StringTokenizer(recMsg);
+					StringTokenizer st = new StringTokenizer(recMsg);
 					String status = st.nextToken();
-					String groupName = "";
-					int numTokens = st.countTokens();
-					while (numTokens > 0) {
-						groupName += st.nextToken();
-						numTokens--;
-					}*/
-					System.out.println(groupName);
-					
-					for (int i = 0; i < groupName.length(); i++) {
-						if (Character.isISOControl(groupName.charAt(i))) {
-							//toClient.writeBytes("The groupname ");
-						}
-					}
+					String groupName = st.nextToken();
 
 					ArrayList<String> clientRequest = new ArrayList<String>(); //UserRequests are <= 6, so you can just base it off size
 					clientRequest.add(status); //add all tokens here to store the entire request
 
-
-					try {
-						if(status.equalsIgnoreCase("post")){
+					
+				try {
+					if(status.equalsIgnoreCase("post")){
 							runPost(conn, groupName, fromClient, toClient);
-						}
-						else if (status.equals("get")){
-							runGet(conn, groupName, fromClient, toClient);			
-						}
-					}catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}}
+					}
+					else if (status.equals("get")){
+						runGet(conn, groupName, fromClient, toClient);			
+					}
+				}catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}}
+				
+		});
+		t.start();
+		
+			
 
-			});
-			t.start();
+
+
+
+
+			/*	if (!status.equals("get") && !status.equals("post")) {
+				response = "error: invalid command";
+			}
+			else {
+
+				while (st.hasMoreTokens()) {
+					token = st.nextToken();
+					clientRequest.add(token);
+					if (!st.hasMoreTokens()) {
+						if (status.equals("post") && !serv.containsKey(token)) {
+							ArrayList<message> messageList = new ArrayList<message>();
+							serv.put(token, messageList);
+							response = "ok\n";
+							System.out.println("dickkk");
+							toClient.writeBytes(response);
+							String usrnm = fromClient.readLine();
+							System.out.println("Username "+"'"+usrnm+"'"+" received.");
+							response = "ok\n";
+							toClient.writeBytes(response);
+							String msge;
+							//String finalMessage = "";
+
+							/*while ((msge = fromClient.readLine()) != null) {
+							finalMessage += msge;
+						}
+							msge = fromClient.readLine();
+
+							System.out.println("Message "+"'"+msge+"'"+" received.");
+							String loc = conn.getRemoteSocketAddress().toString();
+							message m = new message(usrnm, msge, loc);
+							serv.get(token).add(m);
+							conn.close();		// close connection
+						}
+						else if (status.equalsIgnoreCase("get")) {
+							//CODE THE GROUP EXISTS CHECK
+							toClient.writeBytes("ok\n");
+							toClient.writeBytes(serv.get(token).size() + " message(s) ");
+							for(message mess:serv.get(token)) {
+								toClient.writeBytes(mess.toString());
+							}
+						}
+						if (!serv.containsKey(token)) {
+							response = "error: in";
+							//toClient.writeByte(response);
+						}
+					}
+				}
+
+			}
+
+			// do the work
+			//response = message.length() + ": " + message.toUpperCase() + '\n';
+			conn.close();
+			//toClient.writeBytes(response);	// send the result
+		}*/
 		}
+			//System.out.println("server exiting\n");
+			// close connection
+			//svc.close();		// stop listening
+		
 	}
 
 	private static void runGet(Socket conn, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException {
@@ -136,18 +190,18 @@ public class Server implements Runnable {
 			temp.add(new message(username, clientMsg, sock.getRemoteSocketAddress().toString()));
 		}
 		else {
-			List<message> temp = new ArrayList<message>();
+			List<message> temp = Collections.synchronizedList(new ArrayList<message>());
 			temp.add(new message(username, clientMsg, sock.getRemoteSocketAddress().toString()));
 			serv.put(groupName, temp);
 		}
-
+		
 		sock.close();
 	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 
