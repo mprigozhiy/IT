@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 public class Server {
 
 	public static void main(String[] args) throws IOException {
-		Map<String,ArrayList> serv = new HashMap<String,ArrayList>();
+		Map<String,ArrayList<message>> serv = new HashMap<String,ArrayList<message>>();
 		
 		ServerSocket svc = new ServerSocket(12345, 5);	// listen on port 12345
 
