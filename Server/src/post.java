@@ -2,26 +2,35 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class post {
 	public static void main(String args[]) throws Exception {
 		String group = null;
 		
+	try{
 		if(args.length == 1){
-			//Socket sock = new Socket("localhost", 12345);
+			Socket sock = new Socket("localhost", 12345);
 			System.out.println("localhost, 12345");
 			group = args[0];
 		} else if(args.length == 3 ){
-			//Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
+			Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
 			System.out.println("localhost, " + Integer.parseInt(args[1]));
 			group = args[3];
 		} else if (args.length == 5){
-			//Socket sock = new Socket(args[1], Integer.parseInt(args[3]));
+			Socket sock = new Socket(args[1], Integer.parseInt(args[3]));
 			System.out.println(args[1] + ", " + Integer.parseInt(args[3]));
 			group = args[4];
 		} else {
 			System.out.println("Invalid post arguments.");
 		}
+	} catch (IllegalArgumentException e) {
+		System.out.println("Invalid Port Number");
+		return;
+	} catch (UnknownHostException e) {
+		System.out.println("Invalid Host Name");
+		return;
+	}
 		
 		
 		
@@ -37,31 +46,29 @@ public class post {
 		toServer.writeBytes(line + '\n');	// send the line to the server
 		String result = fromServer.readLine();	// read a one-line result
 		
-
-		/*if(result.equals("ok")){
-
 		if(result.equals("ok")){
->>>>>>> c98eae8301a65e0f338cd3b3b09e1c3b571f00a0
 			line = System.getProperty("user.name");
 			System.out.println(System.getProperty("user.name"));
 			toServer.writeBytes(line + '\n');
-		} else if(result.equals("")){
-			System.out.println("Invalid username.");
-			System.exit(1);
+		} else{
+			if(result.equals("error: invalid command")){
+				System.out.println(result);
+			} else if(result.equals("error: invalid group name")){
+				System.out.println(result);
+			}
 		}
 		
 		result = fromServer.readLine();
 		if(result.equals("ok")){
-			System.out.println("Hello");
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
-
-			toServer.writeBytes(userdata + "\n");
-		}*/
 			String enterIn = userdata.readLine();
 			toServer.writeBytes(enterIn + "\n");
-		}  else if(result.equals("")){
-			System.out.println("Invalid username.");
-			System.exit(1);
+		} else{
+			if(result.equals("error: invalid command")){
+				System.out.println(result);
+			} else if(result.equals("error: invalid user name")){
+				System.out.println(result);
+			}
 		}
 		
 		
