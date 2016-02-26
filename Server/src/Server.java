@@ -33,7 +33,7 @@ public class Server implements Runnable {
 		}
 
 		while(true){
-			Socket conn = svc.accept();	// get a connection
+			final Socket conn = svc.accept();	// get a connection
 			Thread t = new Thread(new Runnable(){
 
 				Socket socket = conn;
