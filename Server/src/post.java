@@ -8,18 +8,16 @@ public class post {
 	public static void main(String args[]) throws Exception {
 		String group = null;
 		Socket sock = null;
+
 	try{
 		if(args.length == 1){
 			sock = new Socket("localhost", 12345);
-			System.out.println("localhost, 12345");
 			group = args[0];
 		} else if(args.length == 3 ){
 			sock = new Socket("localhost", Integer.parseInt(args[1]));
-			System.out.println("localhost, " + Integer.parseInt(args[1]));
 			group = args[3];
 		} else if (args.length == 5){
 			sock = new Socket(args[1], Integer.parseInt(args[3]));
-			System.out.println(args[1] + ", " + Integer.parseInt(args[3]));
 			group = args[4];
 		} else {
 			System.out.println("Invalid post arguments.");
@@ -80,7 +78,7 @@ public class post {
 		
 		
 		//result = fromServer.readLine();
-		System.out.println(result);		// print it
+		System.out.println("Your message was received!");		// print it
 		sock.close();				// and we're done
 	
 	}
