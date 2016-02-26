@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Server {
 
 	public static void main(String[] args) throws IOException {
+		Map<String,ArrayList> serv = new HashMap<String,ArrayList>();
+		
 		ServerSocket svc = new ServerSocket(12345, 5);	// listen on port 12345
 
 		Socket conn = svc.accept();	// get a connection

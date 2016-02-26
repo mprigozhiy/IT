@@ -9,6 +9,7 @@ public class message {
 	private String mess = "";
 	private String user = "";
 	private String stamp = "";
+	private String location = "";
 	 
 	public message(String user, String mess) {
 		this.mess = mess;
