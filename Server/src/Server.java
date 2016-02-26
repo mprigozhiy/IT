@@ -92,71 +92,7 @@ public class Server implements Runnable {
 		});
 		t.start();
 		
-			
-
-
-
-
-
-			/*	if (!status.equals("get") && !status.equals("post")) {
-				response = "error: invalid command";
-			}
-			else {
-
-				while (st.hasMoreTokens()) {
-					token = st.nextToken();
-					clientRequest.add(token);
-					if (!st.hasMoreTokens()) {
-						if (status.equals("post") && !serv.containsKey(token)) {
-							ArrayList<message> messageList = new ArrayList<message>();
-							serv.put(token, messageList);
-							response = "ok\n";
-							System.out.println("dickkk");
-							toClient.writeBytes(response);
-							String usrnm = fromClient.readLine();
-							System.out.println("Username "+"'"+usrnm+"'"+" received.");
-							response = "ok\n";
-							toClient.writeBytes(response);
-							String msge;
-							//String finalMessage = "";
-
-							/*while ((msge = fromClient.readLine()) != null) {
-							finalMessage += msge;
-						}
-							msge = fromClient.readLine();
-
-							System.out.println("Message "+"'"+msge+"'"+" received.");
-							String loc = conn.getRemoteSocketAddress().toString();
-							message m = new message(usrnm, msge, loc);
-							serv.get(token).add(m);
-							conn.close();		// close connection
-						}
-						else if (status.equalsIgnoreCase("get")) {
-							//CODE THE GROUP EXISTS CHECK
-							toClient.writeBytes("ok\n");
-							toClient.writeBytes(serv.get(token).size() + " message(s) ");
-							for(message mess:serv.get(token)) {
-								toClient.writeBytes(mess.toString());
-							}
-						}
-						if (!serv.containsKey(token)) {
-							response = "error: in";
-							//toClient.writeByte(response);
-						}
-					}
-				}
-
-			}
-
-			// do the work
-			//response = message.length() + ": " + message.toUpperCase() + '\n';
-			conn.close();
-			//toClient.writeBytes(response);	// send the result
-		}*/
 		}
-			//System.out.println("server exiting\n");
-			// close connection
-			//svc.close();		// stop listening
 		
 	}
 
