@@ -7,11 +7,13 @@ public class get {
 	public static void main(String args[]) throws Exception {
 		String line;	// user input
 		
-		final String user = System.getProperty("user.name");
-		System.out.println(user);
+		//BufferedReader br = new BufferedReader( new InputStreamReader(System.in));
+		//line = br.readLine();
+		
+		//System.out.println(line);
 		
 		if(args.length == 1){
-			//Socket sock = new Socket("localhost", 12345);
+			Socket sock = new Socket("localhost", 12345);
 			line = args[1];
 		} else if(args.length == 3 ){
 			Socket sock = new Socket("localhost", Integer.parseInt(args[1]));
@@ -33,6 +35,6 @@ public class get {
 		toServer.writeBytes(line + '\n');	// send the line to the server
 		String result = fromServer.readLine();	// read a one-line result
 		System.out.println(result);		// print it
-		sock.close();				// and we're done
+		sock.close();				// and we're done*/
 	}
 }
