@@ -1,3 +1,4 @@
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -40,6 +41,8 @@ public class Server {
 		StringTokenizer st = new StringTokenizer(msg);
 		String token = st.nextToken();
 		String initialToken = token;
+		ArrayList<String> clientRequest = new ArrayList<String>(); //UserRequests are <= 6, so you can just base it off size
+		clientRequest.add(initialToken); //add all tokens here to store the entire request
 		if (!initialToken.equals("get") && !initialToken.equals("post")) {
 			response = "error: invalid command";
 			toClient.writeBytes(response);
@@ -48,6 +51,7 @@ public class Server {
 			
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
+				clientRequest.add(token);
 				if (!st.hasMoreTokens()) {
 					if (initialToken.equals("post") && !serv.containsKey(token)) {
 						ArrayList<message> messageList = new ArrayList<message>();

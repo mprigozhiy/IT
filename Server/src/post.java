@@ -60,10 +60,11 @@ public class post {
 		
 		result = fromServer.readLine();
 		if(result.equals("ok")){
-			//BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
-			//String enterIn = userdata.readLine();
-			toServer.writeBytes("Big dick city\n");
-			System.out.println("penis");
+			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Username verified. Please enter your message: ");
+			String enterIn = userdata.readLine();
+			toServer.writeBytes(enterIn + "\n");
+			
 		} else{
 			if(result.equals("error: invalid command")){
 				System.out.println(result);
