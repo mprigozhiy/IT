@@ -37,31 +37,29 @@ public class post {
 		toServer.writeBytes(line + '\n');	// send the line to the server
 		String result = fromServer.readLine();	// read a one-line result
 		
-
-		/*if(result.equals("ok")){
-
 		if(result.equals("ok")){
->>>>>>> c98eae8301a65e0f338cd3b3b09e1c3b571f00a0
 			line = System.getProperty("user.name");
 			System.out.println(System.getProperty("user.name"));
 			toServer.writeBytes(line + '\n');
-		} else if(result.equals("")){
-			System.out.println("Invalid username.");
-			System.exit(1);
+		} else{
+			if(result.equals("error: invalid command")){
+				System.out.println(result);
+			} else if(result.equals("error: invalid group name")){
+				System.out.println(result);
+			}
 		}
 		
 		result = fromServer.readLine();
 		if(result.equals("ok")){
-			System.out.println("Hello");
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
-
-			toServer.writeBytes(userdata + "\n");
-		}*/
 			String enterIn = userdata.readLine();
 			toServer.writeBytes(enterIn + "\n");
-		}  else if(result.equals("")){
-			System.out.println("Invalid username.");
-			System.exit(1);
+		} else{
+			if(result.equals("error: invalid command")){
+				System.out.println(result);
+			} else if(result.equals("error: invalid user name")){
+				System.out.println(result);
+			}
 		}
 		
 		
