@@ -13,7 +13,7 @@ public class post {
 		if(args.length == 1){
 			sock = new Socket("localhost", 12345);
 			group = args[0];
-		} else if(args.length == 2 ){
+		} else if(args.length == 3 ){
 			sock = new Socket("localhost", Integer.parseInt(args[1]));
 			group = args[2];
 		} else if (args.length == 5){
