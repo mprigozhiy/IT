@@ -34,7 +34,7 @@ public class Server implements Runnable {
 		}
 
 		while(true){
-			Socket conn = svc.accept();	// get a connection
+			final Socket conn = svc.accept();	// get a connection
 			Thread t = new Thread(new Runnable(){
 				
 				Socket socket = conn;
@@ -69,13 +69,95 @@ public class Server implements Runnable {
 
 					System.out.println("got line \"" + recMsg + "\"");
 
+<<<<<<< HEAD
 					StringTokenizer st = new StringTokenizer(recMsg);
 					String status = st.nextToken();
 					String groupName = st.nextToken();
+=======
+					int firstSpace = recMsg.indexOf(" ");
+					
+					//String status = "get\r";
+					
+					String status = recMsg.substring(0, firstSpace).trim();
+					
+					/*for (int i = 0; i < status.length(); i++) {
+						if (Character.isISOControl(status.charAt(i))) {
+							try {
+								toClient.writeBytes("error: invalid group name");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}*/
+					
+					String groupName = "";
+					
+					try {
+						if(status.equalsIgnoreCase("post")){
+							groupName = recMsg.substring(firstSpace).trim();
+							for (int i = 0; i < groupName.length(); i++) {
+								if (Character.isISOControl(groupName.charAt(i))) {
+									try {
+										toClient.writeBytes("error: invalid group name");
+										System.exit(1);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+							runPost(conn, groupName, fromClient, toClient);
+						}
+						else if (status.equalsIgnoreCase("get")){
+							groupName = recMsg.substring(firstSpace).trim();
+							for (int i = 0; i < groupName.length(); i++) {
+								if (Character.isISOControl(groupName.charAt(i))) {
+									try {
+										toClient.writeBytes("error: invalid group name");
+										System.exit(1);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+							runGet(conn, groupName, fromClient, toClient);
+						}
+					else {
+						try {
+							toClient.writeBytes("what the FUCK kind of command is this shit: "+status);
+							System.exit(1);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} 
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					/*groupName = recMsg.substring(firstSpace).trim();
+
+					System.out.println(groupName);
+					
+					for (int i = 0; i < groupName.length(); i++) {
+						if (Character.isISOControl(groupName.charAt(i))) {
+							try {
+								toClient.writeBytes("error: invalid group name");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}*/
+>>>>>>> origin/master
 
 					ArrayList<String> clientRequest = new ArrayList<String>(); //UserRequests are <= 6, so you can just base it off size
 					clientRequest.add(status); //add all tokens here to store the entire request
 
+<<<<<<< HEAD
 					
 				try {
 					if(status.equalsIgnoreCase("post")){
@@ -153,6 +235,13 @@ public class Server implements Runnable {
 			conn.close();
 			//toClient.writeBytes(response);	// send the result
 		}*/
+=======
+
+					
+
+				}});
+			t.start();
+>>>>>>> origin/master
 		}
 			//System.out.println("server exiting\n");
 			// close connection
