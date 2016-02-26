@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +14,14 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 		Map<String,ArrayList<message>> serv = new HashMap<String,ArrayList<message>>();
+		ServerSocket svc;
 		
-		ServerSocket svc = new ServerSocket(12345, 5);	// listen on port 12345
+		if (!args[0].equals("")) {
+			svc = new ServerSocket(Integer.parseInt(args[0].substring(3, args[0].length())), 5);	// listen on port 12345
+		}
+		else {
+			svc = new ServerSocket(12345, 5);	// listen on port 12345
+		}
 
 		Socket conn = svc.accept();	// get a connection
 
@@ -23,16 +30,17 @@ public class Server {
 		DataOutputStream toClient = new DataOutputStream(conn.getOutputStream());
 
 		// read the data
-		String message;
-		message = fromClient.readLine();
+		String msg;
+		msg = fromClient.readLine();
 		
 		String response;
 		
-		System.out.println("got line \"" + message + "\"");
+		System.out.println("got line \"" + msg + "\"");
 
-		StringTokenizer st = new StringTokenizer(message);
+		StringTokenizer st = new StringTokenizer(msg);
 		String token = st.nextToken();
-		if (!token.equals("get") || !token.equals("post")) {
+		String initialToken = token;
+		if (!initialToken.equals("get") || !initialToken.equals("post")) {
 			response = "error: invalid command";
 			toClient.writeBytes(response);
 		}
@@ -41,16 +49,36 @@ public class Server {
 			while (st.hasMoreTokens()) {
 				token = st.nextToken();
 				if (!st.hasMoreTokens()) {
-					if (token.equals(""));
+					if (initialToken.equals("post") && !serv.containsKey(initialToken)) {
+						ArrayList<message> messageList = new ArrayList<message>();
+						serv.put(token, messageList);
+						response = "ok";
+						toClient.writeBytes(response);
+						String usrnm = fromClient.readLine();
+						response = "ok";
+						String msge;
+						String finalMessage = "";
+						while ((msge = fromClient.readLine()) != null) {
+							finalMessage += msge;
+						}
+						String loc = conn.getRemoteSocketAddress().toString();
+						message m = new message(usrnm, finalMessage, loc);
+						serv.get(initialToken).add(m);
+						conn.close();		// close connection
+					}
+					if (!serv.containsKey(token)) {
+						response = "error: in";
+						//toClient.writeByte(response);
+					}
 				}
 			}
 			
 		}
 		
 		// do the work
-		response = message.length() + ": " + message.toUpperCase() + '\n';
+		//response = message.length() + ": " + message.toUpperCase() + '\n';
 
-		toClient.writeBytes(response);	// send the result
+		//toClient.writeBytes(response);	// send the result
 
 		System.out.println("server exiting\n");
 		conn.close();		// close connection
