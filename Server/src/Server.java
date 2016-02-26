@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -36,12 +35,10 @@ public class Server implements Runnable {
 		while(true){
 			Socket conn = svc.accept();	// get a connection
 			Thread t = new Thread(new Runnable(){
-				
+
 				Socket socket = conn;
 				@Override
 				public void run() {
-					
-
 
 					// get the input/output streams for the socket
 					BufferedReader fromClient = null; 
@@ -54,7 +51,7 @@ public class Server implements Runnable {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					
+
 					// read the data
 					String recMsg = null;
 
@@ -91,24 +88,22 @@ public class Server implements Runnable {
 					ArrayList<String> clientRequest = new ArrayList<String>(); //UserRequests are <= 6, so you can just base it off size
 					clientRequest.add(status); //add all tokens here to store the entire request
 
-					
-				try {
-					if(status.equalsIgnoreCase("post")){
+
+					try {
+						if(status.equalsIgnoreCase("post")){
 							runPost(conn, groupName, fromClient, toClient);
-					}
-					else if (status.equals("get")){
-						runGet(conn, groupName, fromClient, toClient);			
-					}
-				}catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}}
-				
-		});
-		t.start();
-		
+						}
+						else if (status.equals("get")){
+							runGet(conn, groupName, fromClient, toClient);			
+						}
+					}catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}}
+
+			});
+			t.start();
 		}
-		
 	}
 
 	private static void runGet(Socket conn, String groupName, BufferedReader fromClient, DataOutputStream toClient) throws IOException {
@@ -145,14 +140,14 @@ public class Server implements Runnable {
 			temp.add(new message(username, clientMsg, sock.getRemoteSocketAddress().toString()));
 			serv.put(groupName, temp);
 		}
-		
+
 		sock.close();
 	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

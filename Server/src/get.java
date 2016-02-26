@@ -10,6 +10,10 @@ public class get {
 		String line = null;	
 		Socket sock = null;
 		
+		/*
+		 * Tries to setup the socket. This will catch if port number is invalid, 
+		 * if hostname is invalid or if any post commands are invalid. 
+		 */
 		try {
 			if(args.length == 1){
 				sock = new Socket("localhost", 12345);
@@ -22,42 +26,47 @@ public class get {
 				line = args[4];
 			} else {
 				System.out.println("Invalid post arguments.");
-				return;
+				System.exit(1);
 			}
 		} catch (IllegalArgumentException e) {
 			System.out.println("Invalid Port Number");
-			return;
+			System.exit(1);
 		} catch (UnknownHostException e) {
 			System.out.println("Invalid Host Name");
-			return;
+			System.exit(1);
 		}
-				
+		
+		/* 
+		 * Create data streams to receive and send data to server
+		 */
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-	
-		
-		
-		toServer.writeBytes("get " + line + '\n');	// send the line to the server
-		
-		String result = "";	// read a one-line result
-		
+
+		toServer.writeBytes("get " + line + '\n');	
+		String result = "";	
 		result = fromServer.readLine();
 		
+		/*
+		 * If the group name does not exist, we will receive an error from server.
+		 */
 		if (result.equalsIgnoreCase("error: invalid group name") || result.equalsIgnoreCase("error: invalid command")) {
 			System.out.println(result);
 			sock.close();
-			return;
+			System.exit(1);
 		}
 		
 		result = fromServer.readLine();
 		
+		/*
+		 * If everything is good and the group name exists. We 
+		 * will loop until the server stops sending us messages.
+		 * Exit upon completion
+		 */
 		while (result != null) {
 			System.out.println(result);	
 			System.out.println("");
 			result = fromServer.readLine();
 		}
-		
-		//System.out.println(result);		// print it
-		sock.close();				// and we're done*/
+		sock.close();				
 	}
 }

@@ -6,20 +6,18 @@ import java.net.UnknownHostException;
 
 public class post {
 	public static void main(String args[]) throws Exception {
-		String group = null;
-		Socket sock = null;
-	try{
+		String group = null; //Target group name
+		Socket sock = null;  //Socket
+
+	try{ //Conditions for optional flags with error checking
 		if(args.length == 1){
 			sock = new Socket("localhost", 12345);
-			System.out.println("localhost, 12345");
 			group = args[0];
 		} else if(args.length == 3 ){
 			sock = new Socket("localhost", Integer.parseInt(args[1]));
-			System.out.println("localhost, " + Integer.parseInt(args[1]));
 			group = args[3];
 		} else if (args.length == 5){
 			sock = new Socket(args[1], Integer.parseInt(args[3]));
-			System.out.println(args[1] + ", " + Integer.parseInt(args[3]));
 			group = args[4];
 		} else {
 			System.out.println("Invalid post arguments.");
@@ -43,16 +41,15 @@ public class post {
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 	
-		line = "post " + group;		// read a line from the user
-		toServer.writeBytes(line + '\n');	// send the line to the server
-		String result = fromServer.readLine();	// read a one-line result
+		line = "post " + group;		// "post groupname"
+		toServer.writeBytes(line + '\n');	// send post request to server
+		String result = fromServer.readLine();	// read server response
 		
-		if(result.equals("ok")){
-			line = System.getProperty("user.name");
-			System.out.println(System.getProperty("user.name"));
-			toServer.writeBytes(line + '\n');
+		if(result.equals("ok")){	// Server approves request
+			line = System.getProperty("user.name"); // set username
+			toServer.writeBytes(line + '\n'); //send username to server
 		} else{
-			if(result.equals("error: invalid command")){
+			if(result.equals("error: invalid command")){ //error from server
 				System.out.println(result);
 				System.exit(1);
 			} else if(result.equals("error: invalid group name")){
@@ -61,14 +58,14 @@ public class post {
 			}
 		}
 		
-		result = fromServer.readLine();
-		if(result.equals("ok")){
-			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Username verified. Please enter your message: ");
+		result = fromServer.readLine(); // Server response
+		if(result.equals("ok")){ // Server accepted username.
+			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in)); //read from input
+			//System.out.println("Username verified. Please enter your message: ");
 			String enterIn = userdata.readLine();
-			toServer.writeBytes(enterIn + "\n");
+			toServer.writeBytes(enterIn + "\n"); //send input stream
 			
-		} else{
+		} else{ //error conditions (exit)
 			if(result.equals("error: invalid command")){
 				System.out.println(result);
 				System.exit(1);
@@ -80,7 +77,7 @@ public class post {
 		
 		
 		//result = fromServer.readLine();
-		System.out.println(result);		// print it
+		System.out.println("Your message was received!");	//On exit message.
 		sock.close();				// and we're done
 	
 	}
