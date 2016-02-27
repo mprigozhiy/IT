@@ -59,6 +59,7 @@ public class post {
 		for (int i = 0; i < group.length(); i++) {
 			if (Character.isISOControl(group.charAt(i))) {
 				System.out.println("error: invalid group name");
+				sock.close();
 				System.exit(1);
 			}
 		}
@@ -82,12 +83,14 @@ public class post {
 			
 			if(line.equals("")){
 				System.out.println("error: invalid user name");
+				sock.close();
 				System.exit(1);
 			}
 			
 			for (int i = 0; i < line.length(); i++) {
 				if (Character.isISOControl(line.charAt(i))) {
 					System.out.println("error: invalid user name");
+					sock.close();
 					System.exit(1);
 				}
 			}
@@ -96,9 +99,11 @@ public class post {
 		} else{
 			if(result.equals("error: invalid command")){ //error from server
 				System.out.println(result);
+				sock.close();
 				System.exit(1);
 			} else if(result.equals("error: invalid group name")){
 				System.out.println(result);
+				sock.close();
 				System.exit(1);
 			}
 		}
@@ -117,9 +122,11 @@ public class post {
 		} else{ //error conditions (exit)
 			if(result.equals("error: invalid command")){
 				System.out.println(result);
+				sock.close();
 				System.exit(1);
 			} else if(result.equals("error: invalid user name")){
 				System.out.println(result);
+				sock.close();
 				System.exit(1);
 			}
 		}

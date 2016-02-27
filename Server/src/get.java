@@ -66,6 +66,7 @@ public class get {
 		for (int i = 0; i < group.length(); i++) {
 			if (Character.isISOControl(group.charAt(i))) {
 				System.out.println("error: invalid group name");
+				sock.close();
 				System.exit(1);
 			}
 		}
