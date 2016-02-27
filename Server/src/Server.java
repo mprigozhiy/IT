@@ -1,3 +1,5 @@
+/*Jonathan Caverly, Mikhail Prigozhiy, Jonathan J. Getahun*/
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -87,7 +89,7 @@ public class Server implements Runnable {
 						if(status.equalsIgnoreCase("post")){
 							groupName = recMsg.substring(firstSpace).trim();
 							for (int i = 0; i < groupName.length(); i++) {
-								if (Character.isISOControl(groupName.charAt(i))) {
+								if (Character.isISOControl(groupName.charAt(i)) || !isAsciiPrintable(groupName.charAt(i))) {
 									try {
 										toClient.writeBytes("error: invalid group name");
 										System.exit(1);

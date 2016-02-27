@@ -1,3 +1,5 @@
+/*Jonathan Caverly, Mikhail Prigozhiy, Jonathan J. Getahun*/
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
