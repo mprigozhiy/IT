@@ -102,7 +102,7 @@ public class Server implements Runnable {
 						else if (status.equalsIgnoreCase("get")){
 							groupName = recMsg.substring(firstSpace).trim();
 							for (int i = 0; i < groupName.length(); i++) {
-								if (Character.isISOControl(groupName.charAt(i))) {
+								if (Character.isISOControl(groupName.charAt(i)) || !isAsciiPrintable(groupName.charAt(i))) {
 									try {
 										toClient.writeBytes("error: invalid group name");
 										System.exit(1);
@@ -195,6 +195,10 @@ public class Server implements Runnable {
 		}
 
 		sock.close();
+	}
+	
+	public static boolean isAsciiPrintable(char c) {
+		return c >= 32 && c < 127;
 	}
 
 	@Override
