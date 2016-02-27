@@ -17,7 +17,13 @@ public class post {
 			sock = new Socket("localhost", Integer.parseInt(args[1]));
 			group = args[2];
 		} else if (args.length == 5){
-			sock = new Socket(args[1], Integer.parseInt(args[3]));
+		
+			if(args[0].equals("-p") && args[2].equals("-h")){
+				sock = new Socket(args[3], Integer.parseInt(args[1]));
+			} else if (args[0].equals("-h") && args[2].equals("-p")){
+				sock = new Socket(args[1], Integer.parseInt(args[3]));
+			}
+			
 			group = args[4];
 		} else {
 			System.out.println("Invalid post arguments.");

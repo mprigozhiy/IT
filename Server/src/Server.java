@@ -83,6 +83,8 @@ public class Server implements Runnable {
 					
 					String groupName = "";
 					
+		
+					
 					try {
 						if(status.equalsIgnoreCase("post")){
 							groupName = recMsg.substring(firstSpace).trim();
