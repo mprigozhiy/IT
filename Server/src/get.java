@@ -93,8 +93,8 @@ public class get {
 		 * Exit upon completion
 		 */
 		while (result != null) {
-			System.out.println(result);	
 			System.out.println("");
+			System.out.println(result);	
 			result = fromServer.readLine();
 		}
 		sock.close();				
