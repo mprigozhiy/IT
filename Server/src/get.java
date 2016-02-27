@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -54,17 +55,20 @@ public class get {
 		} catch (UnknownHostException e) {
 			System.out.println("Invalid Host Name.");
 			System.exit(1);
+		} catch (ConnectException e) {
+			System.out.println("ConnectException: Unable to connect.");
+			System.exit(1);
 		}
 			
-
+		/*
+		 * Checks for invalid groupname
+		 */
 		for (int i = 0; i < group.length(); i++) {
 			if (Character.isISOControl(group.charAt(i))) {
 				System.out.println("error: invalid group name");
 				System.exit(1);
 			}
 		}
-
-
 		
 		/* 
 		 * Create data streams to receive and send data to server
@@ -72,7 +76,7 @@ public class get {
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
-		toServer.writeBytes("get " + line + '\n');	
+		toServer.writeBytes("get " + group + '\n');	
 		String result = "";	
 		result = fromServer.readLine();
 		
@@ -86,6 +90,8 @@ public class get {
 		}
 		
 		result = fromServer.readLine();
+		System.out.println(result);	
+		result = fromServer.readLine();
 		
 		/*
 		 * If everything is good and the group name exists. We 
@@ -93,7 +99,7 @@ public class get {
 		 * Exit upon completion
 		 */
 		while (result != null) {
-			System.out.println("");
+			//System.out.println("");
 			System.out.println(result);	
 			result = fromServer.readLine();
 		}

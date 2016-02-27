@@ -24,6 +24,6 @@ public class message {
 	}
 	
 	public String toString() {
-		return "from " + this.user + " " + this.location +  " " + this.stamp + "\n" + this.mess;
+		return "\nfrom " + this.user + " " + this.location +  " " + this.stamp + "\n\n" + this.mess;
 	}
 }

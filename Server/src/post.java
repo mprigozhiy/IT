@@ -3,6 +3,7 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -47,6 +48,9 @@ public class post {
 			System.exit(1);
 		} catch (UnknownHostException e) {
 			System.out.println("Invalid Host Name.");
+			System.exit(1);
+		} catch (ConnectException e) {
+			System.out.println("ConnectException: Unable to connect.");
 			System.exit(1);
 		}
 
