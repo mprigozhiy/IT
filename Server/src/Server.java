@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class Server implements Runnable {
 
@@ -64,24 +61,9 @@ public class Server implements Runnable {
 						e1.printStackTrace();
 					}
 
-					//System.out.println("got line \"" + recMsg + "\"");
-
 					int firstSpace = recMsg.indexOf(" ");
-					
-					//String status = "get\r";
-					
+										
 					String status = recMsg.substring(0, firstSpace).trim();
-					
-					/*for (int i = 0; i < status.length(); i++) {
-						if (Character.isISOControl(status.charAt(i))) {
-							try {
-								toClient.writeBytes("error: invalid group name");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}*/
 					
 					String groupName = "";
 					
@@ -89,7 +71,7 @@ public class Server implements Runnable {
 						if(status.equalsIgnoreCase("post")){
 							groupName = recMsg.substring(firstSpace).trim();
 							for (int i = 0; i < groupName.length(); i++) {
-								if (Character.isISOControl(groupName.charAt(i)) || !isAsciiPrintable(groupName.charAt(i))) {
+								if (Character.isISOControl(groupName.charAt(i))) {
 									try {
 										toClient.writeBytes("error: invalid group name");
 										System.exit(1);
@@ -99,13 +81,12 @@ public class Server implements Runnable {
 									}
 								}
 							}
-							System.out.println("got line \"" + recMsg + "\"");
 							runPost(conn, groupName, fromClient, toClient);
 						}
 						else if (status.equalsIgnoreCase("get")){
 							groupName = recMsg.substring(firstSpace).trim();
 							for (int i = 0; i < groupName.length(); i++) {
-								if (Character.isISOControl(groupName.charAt(i)) || !isAsciiPrintable(groupName.charAt(i))) {
+								if (Character.isISOControl(groupName.charAt(i))) {
 									try {
 										toClient.writeBytes("error: invalid group name");
 										System.exit(1);
@@ -119,7 +100,7 @@ public class Server implements Runnable {
 						}
 					else {
 						try {
-							toClient.writeBytes("what the FUCK kind of command is this shit: "+status);
+							toClient.writeBytes("error: invalid command");
 							System.exit(1);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -130,27 +111,8 @@ public class Server implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					/*groupName = recMsg.substring(firstSpace).trim();
-
-					System.out.println(groupName);
-					
-					for (int i = 0; i < groupName.length(); i++) {
-						if (Character.isISOControl(groupName.charAt(i))) {
-							try {
-								toClient.writeBytes("error: invalid group name");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-					}*/
-
 					ArrayList<String> clientRequest = new ArrayList<String>(); //UserRequests are <= 6, so you can just base it off size
 					clientRequest.add(status); //add all tokens here to store the entire request
-
-
-					
 
 				}});
 			t.start();
@@ -177,7 +139,6 @@ public class Server implements Runnable {
 		//CHECK FOR PROPER INPUTS - MIKHAIL 
 		toClient.writeBytes("ok\n");
 		String username = fromClient.readLine();
-		System.out.println("username is: " + username);
 		toClient.writeBytes("ok\n");
 		String clientMsg = "";                
         String add = "";
@@ -185,7 +146,6 @@ public class Server implements Runnable {
         while((add = fromClient.readLine()) != null){
         	clientMsg = clientMsg + add + "\n";
         }		
-        System.out.println("The message was received: " + clientMsg);
 
 		if (serv.containsKey(groupName)){
 			List<message> temp = serv.get(groupName);
@@ -200,10 +160,6 @@ public class Server implements Runnable {
 		sock.close();
 	}
 	
-	public static boolean isAsciiPrintable(char c) {
-		return c >= 32 && c < 127;
-	}
-
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
