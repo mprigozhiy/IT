@@ -11,50 +11,83 @@ public class post {
 		String group = null; //Target group name
 		Socket sock = null;  //Socket
 
-	try{ //Conditions for optional flags with error checking
-		if(args.length == 1){
-			sock = new Socket("localhost", 12345);
-			group = args[0];
-		} else if(args.length == 3 ){
-			sock = new Socket("localhost", Integer.parseInt(args[1]));
-			group = args[2];
-		} else if (args.length == 5){
-		
-			if(args[0].equals("-p") && args[2].equals("-h")){
-				sock = new Socket(args[3], Integer.parseInt(args[1]));
-			} else if (args[0].equals("-h") && args[2].equals("-p")){
-				sock = new Socket(args[1], Integer.parseInt(args[3]));
+		try{ //Conditions for optional flags with error checking
+			if(args.length == 1){
+				sock = new Socket("localhost", 12345);
+				group = args[0];
+			} else if(args.length == 3 ){
+				if(args[0].equals("-h")){
+					sock = new Socket(args[1], 12345);
+				} else if(args[0].equals("-p")){
+					sock = new Socket("localhost", Integer.parseInt(args[1]));
+				} else {
+					System.out.println("Error: Invalid flag.");
+					System.exit(1);
+				}
+
+				group = args[2];
+			} else if (args.length == 5){
+
+				if(args[0].equals("-p") && args[2].equals("-h")){
+					sock = new Socket(args[3], Integer.parseInt(args[1]));
+				} else if (args[0].equals("-h") && args[2].equals("-p")){
+					sock = new Socket(args[1], Integer.parseInt(args[3]));
+				} else {
+					System.out.println("Error: Invalid flag.");
+					System.exit(1);
+				}
+
+				group = args[4];
+			} else {
+				System.out.println("Invalid post arguments.");
+				System.exit(1);
 			}
-			
-			group = args[4];
-		} else {
-			System.out.println("Invalid post arguments.");
+		} catch (IllegalArgumentException e) {
+			System.out.println("Invalid Port Number.");
+			System.exit(1);
+		} catch (UnknownHostException e) {
+			System.out.println("Invalid Host Name.");
 			System.exit(1);
 		}
-	} catch (IllegalArgumentException e) {
-		System.out.println("Invalid Port Number.");
-		System.exit(1);
-	} catch (UnknownHostException e) {
-		System.out.println("Invalid Host Name.");
-		System.exit(1);
-	}
-		
-		
-		
-		
+
+
+
+		for (int i = 0; i < group.length(); i++) {
+			if (Character.isISOControl(group.charAt(i))) {
+				System.out.println("error: invalid group name");
+				System.exit(1);
+			}
+		}
+
+
+
+
 		String line;	// user input
-		
-	
+
+
 		//Socket sock = new Socket("localhost", 12345);	// connect to localhost port 12345
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-	
+
 		line = "post " + group;		// "post groupname"
 		toServer.writeBytes(line + '\n');	// send post request to server
 		String result = fromServer.readLine();	// read server response
-		
+
 		if(result.equals("ok")){	// Server approves request
 			line = System.getProperty("user.name"); // set username
+			
+			if(line.equals("")){
+				System.out.println("error: invalid user name");
+				System.exit(1);
+			}
+			
+			for (int i = 0; i < line.length(); i++) {
+				if (Character.isISOControl(line.charAt(i))) {
+					System.out.println("error: invalid user name");
+					System.exit(1);
+				}
+			}
+			
 			toServer.writeBytes(line + '\n'); //send username to server
 		} else{
 			if(result.equals("error: invalid command")){ //error from server
@@ -65,17 +98,18 @@ public class post {
 				System.exit(1);
 			}
 		}
-		
+
 		result = fromServer.readLine(); // Server response
 		if(result.equals("ok")){ // Server accepted username.
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in)); //read from input
 			//System.out.println("Username verified. Please enter your message: ");
-            String enterIn = "";
+			String enterIn = "";
 
-            while((enterIn = userdata.readLine()) != null){
-            	toServer.writeBytes(enterIn + "\n"); //send input stream
-            }
-			
+			while((enterIn = userdata.readLine()) != null){
+				
+				toServer.writeBytes(enterIn + "\n"); //send input stream
+			}
+
 		} else{ //error conditions (exit)
 			if(result.equals("error: invalid command")){
 				System.out.println(result);
@@ -85,11 +119,11 @@ public class post {
 				System.exit(1);
 			}
 		}
-		
-		
+
+
 		//result = fromServer.readLine();
 		System.out.println("Your message was received!");	//On exit message.
 		sock.close();				// and we're done
-	
+
 	}
 }
