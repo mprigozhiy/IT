@@ -60,7 +60,15 @@ public class Server implements Runnable {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
+					if (recMsg == null) {
+						try {
+							conn.close(); //End connection with client
+							return;
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 					int firstSpace = recMsg.indexOf(" ");
 										
 					String status = recMsg.substring(0, firstSpace).trim(); //Gets the status from the client's message
@@ -74,7 +82,8 @@ public class Server implements Runnable {
 								if (Character.isISOControl(groupName.charAt(i))) { //If client's group name contains a control character
 									try {
 										toClient.writeBytes("error: invalid group name"); //Send error message to client
-										System.exit(1); //Exit the thread
+										conn.close(); //End connection with client
+										return;
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -89,7 +98,8 @@ public class Server implements Runnable {
 								if (Character.isISOControl(groupName.charAt(i))) { //If the client's group name contains a control character
 									try {
 										toClient.writeBytes("error: invalid group name"); //Send error message to client
-										System.exit(1); //Exit the thread
+										conn.close(); //End connection with client
+										return;
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -101,7 +111,8 @@ public class Server implements Runnable {
 					else { //If the client's status is neither "post" nor "get"
 						try {
 							toClient.writeBytes("error: invalid command"); //Send error message to client
-							System.exit(1); //Exit the thread
+							conn.close(); //End connection with client
+							return;
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -125,11 +136,11 @@ public class Server implements Runnable {
 			for(message mess: serv.get(groupName)){ //For each message in the group 
 				toClient.writeBytes(mess.toString()); //Send each message to the client
 			}
-			conn.close(); //Ends connection with client
+			conn.close(); //End connection with client
 			return;
 		} else { //If the requested group name is not in the hash map
 			toClient.writeBytes("error: invalid group name"); //Sends error message to the client
-			conn.close(); //Ends connection with client
+			conn.close(); //End connection with client
 			return;
 		}
 	}
@@ -156,7 +167,8 @@ public class Server implements Runnable {
 			serv.put(groupName, temp); //Add the group to the hash map
 		}
 
-		sock.close(); //Ends connection with client
+		sock.close(); //End connection with client
+		return;
 	}
 	
 	@Override

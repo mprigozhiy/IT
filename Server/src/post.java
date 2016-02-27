@@ -97,11 +97,11 @@ public class post {
 			
 			toServer.writeBytes(line + '\n'); //send username to server
 		} else{
-			if(result.equals("error: invalid command")){ //error from server
+			if(result.equalsIgnoreCase("error: invalid command")){ //error from server
 				System.out.println(result);
 				sock.close();
 				System.exit(1);
-			} else if(result.equals("error: invalid group name")){
+			} else if(result.equalsIgnoreCase("error: invalid group name")){
 				System.out.println(result);
 				sock.close();
 				System.exit(1);
@@ -120,11 +120,11 @@ public class post {
 			}
 
 		} else{ //error conditions (exit)
-			if(result.equals("error: invalid command")){
+			if(result.equalsIgnoreCase("error: invalid command")){
 				System.out.println(result);
 				sock.close();
 				System.exit(1);
-			} else if(result.equals("error: invalid user name")){
+			} else if(result.equalsIgnoreCase("error: invalid user name")){
 				System.out.println(result);
 				sock.close();
 				System.exit(1);
