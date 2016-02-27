@@ -63,13 +63,8 @@ public class post {
 				System.exit(1);
 			}
 		}
-
-
-
-
 		String line;	// user input
-
-
+		
 		//Socket sock = new Socket("localhost", 12345);	// connect to localhost port 12345
 		DataOutputStream toServer = new DataOutputStream(sock.getOutputStream());
 		BufferedReader fromServer = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -80,13 +75,13 @@ public class post {
 
 		if(result.equals("ok")){	// Server approves request
 			line = System.getProperty("user.name"); // set username
-			
+
 			if(line.equals("")){
 				System.out.println("error: invalid user name");
 				sock.close();
 				System.exit(1);
 			}
-			
+
 			for (int i = 0; i < line.length(); i++) {
 				if (Character.isISOControl(line.charAt(i))) {
 					System.out.println("error: invalid user name");
@@ -94,7 +89,7 @@ public class post {
 					System.exit(1);
 				}
 			}
-			
+
 			toServer.writeBytes(line + '\n'); //send username to server
 		} else{
 			if(result.equalsIgnoreCase("error: invalid command")){ //error from server
@@ -111,11 +106,10 @@ public class post {
 		result = fromServer.readLine(); // Server response
 		if(result.equals("ok")){ // Server accepted username.
 			BufferedReader userdata = new BufferedReader(new InputStreamReader(System.in)); //read from input
-			//System.out.println("Username verified. Please enter your message: ");
 			String enterIn = "";
 
 			while((enterIn = userdata.readLine()) != null){
-				
+
 				toServer.writeBytes(enterIn + "\n"); //send input stream
 			}
 
@@ -131,8 +125,6 @@ public class post {
 			}
 		}
 
-
-		//result = fromServer.readLine();
 		System.out.println("Your message was received!");	//On exit message.
 		sock.close();				// and we're done
 

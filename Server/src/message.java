@@ -12,7 +12,7 @@ public class message {
 	private String user = "";
 	private String stamp = "";
 	private String location = "";
-	 
+
 	public message(String user, String mess, String location) {
 		this.mess = mess;
 		this.user = user;
@@ -22,7 +22,7 @@ public class message {
 		this.stamp = dateFormat.format(cal.getTime());
 		this.location = location;
 	}
-	
+
 	public String toString() {
 		return "\nfrom " + this.user + " " + this.location +  " " + this.stamp + "\n\n" + this.mess;
 	}

@@ -70,11 +70,11 @@ public class Server implements Runnable {
 						}
 					}
 					int firstSpace = recMsg.indexOf(" ");
-										
+
 					String status = recMsg.substring(0, firstSpace).trim(); //Gets the status from the client's message
-					
+
 					String groupName = "";
-					
+
 					try {
 						if(status.equalsIgnoreCase("post")){ //If the client's status is "post"
 							groupName = recMsg.substring(firstSpace).trim(); //Gets the group name from the client's message
@@ -108,16 +108,16 @@ public class Server implements Runnable {
 							}
 							runGet(conn, groupName, fromClient, toClient); //Continue talking with client
 						}
-					else { //If the client's status is neither "post" nor "get"
-						try {
-							toClient.writeBytes("error: invalid command"); //Send error message to client
-							conn.close(); //End connection with client
-							return;
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					} 
+						else { //If the client's status is neither "post" nor "get"
+							try {
+								toClient.writeBytes("error: invalid command"); //Send error message to client
+								conn.close(); //End connection with client
+								return;
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} 
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -151,11 +151,11 @@ public class Server implements Runnable {
 		String username = fromClient.readLine(); //Gets username from client
 		toClient.writeBytes("ok\n"); //Tells the client "ok"
 		String clientMsg = "";
-        String add = "";
+		String add = "";
 
-        while((add = fromClient.readLine()) != null){ //While the client is continuing to write their message
-        	clientMsg = clientMsg + add + "\n"; //Update their message
-        }		
+		while((add = fromClient.readLine()) != null){ //While the client is continuing to write their message
+			clientMsg = clientMsg + add + "\n"; //Update their message
+		}		
 
 		if (serv.containsKey(groupName)){ //If the requested group name is in the hash map
 			List<message> temp = serv.get(groupName); //Get the corresponding list of messages
@@ -170,12 +170,10 @@ public class Server implements Runnable {
 		sock.close(); //End connection with client
 		return;
 	}
-	
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 
 	}
-
-
 }

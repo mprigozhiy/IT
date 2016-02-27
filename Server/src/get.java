@@ -13,7 +13,7 @@ public class get {
 		String line = null;	
 		Socket sock = null;
 		String group = null;
-		
+
 		/*
 		 * Tries to setup the socket. This will catch if port number is invalid, 
 		 * if hostname is invalid or if any post commands are invalid. 
@@ -31,10 +31,10 @@ public class get {
 					System.out.println("Error: Invalid flag.");
 					System.exit(1);
 				}
-				
+
 				group = args[2];
 			} else if (args.length == 5){
-			
+
 				if(args[0].equals("-p") && args[2].equals("-h")){
 					sock = new Socket(args[3], Integer.parseInt(args[1]));
 				} else if (args[0].equals("-h") && args[2].equals("-p")){
@@ -43,7 +43,7 @@ public class get {
 					System.out.println("Error: Invalid flag.");
 					System.exit(1);
 				}
-				
+
 				group = args[4];
 			} else {
 				System.out.println("Invalid post arguments.");
@@ -59,7 +59,7 @@ public class get {
 			System.out.println("ConnectException: Unable to connect.");
 			System.exit(1);
 		}
-			
+
 		/*
 		 * Checks for invalid groupname
 		 */
@@ -70,7 +70,7 @@ public class get {
 				System.exit(1);
 			}
 		}
-		
+
 		/* 
 		 * Create data streams to receive and send data to server
 		 */
@@ -80,7 +80,7 @@ public class get {
 		toServer.writeBytes("get " + group + '\n');	
 		String result = "";	
 		result = fromServer.readLine();
-		
+
 		/*
 		 * If the group name does not exist, we will receive an error from server.
 		 */
@@ -89,11 +89,11 @@ public class get {
 			sock.close();
 			System.exit(1);
 		}
-		
+
 		result = fromServer.readLine();
 		System.out.println(result);	
 		result = fromServer.readLine();
-		
+
 		/*
 		 * If everything is good and the group name exists. We 
 		 * will loop until the server stops sending us messages.
