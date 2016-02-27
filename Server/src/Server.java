@@ -62,7 +62,7 @@ public class Server implements Runnable {
 						e1.printStackTrace();
 					}
 
-					System.out.println("got line \"" + recMsg + "\"");
+					//System.out.println("got line \"" + recMsg + "\"");
 
 					int firstSpace = recMsg.indexOf(" ");
 					
@@ -83,8 +83,6 @@ public class Server implements Runnable {
 					
 					String groupName = "";
 					
-		
-					
 					try {
 						if(status.equalsIgnoreCase("post")){
 							groupName = recMsg.substring(firstSpace).trim();
@@ -99,6 +97,7 @@ public class Server implements Runnable {
 									}
 								}
 							}
+							System.out.println("got line \"" + recMsg + "\"");
 							runPost(conn, groupName, fromClient, toClient);
 						}
 						else if (status.equalsIgnoreCase("get")){
